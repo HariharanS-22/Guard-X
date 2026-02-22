@@ -1,0 +1,7 @@
+../Modules/motor.c:26:13:Forward	1
+../Modules/motor.c:37:13:Backward	1
+../Modules/motor.c:48:13:Right	1
+../Modules/motor.c:59:13:Left	1
+../Modules/motor.c:70:13:carStop	1
+../Modules/motor.c:83:6:Motor_Init	1
+../Modules/motor.c:93:6:Motor_UpdateJoystick	5
