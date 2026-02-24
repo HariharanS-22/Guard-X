@@ -10,13 +10,21 @@
 char ssid[] = "Black_pearl";
 char pass[] = "t3ra552x";
 
-int joyX = 512;
-int joyY = 512;
+int joyX = 512, joyY = 512;
+int speed = 800;
 
 void setup()
 {
   Serial.begin(115200);
   Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass, "blynk.cloud", 80);
+}
+BLYNK_WRITE(V0)   // Speed
+{
+  int newSpeed = param.asInt();
+  if (newSpeed != speed) {
+    speed = newSpeed;
+    Serial.printf("S:%d\r\n", speed);
+  }
 }
 
 BLYNK_WRITE(V1)   // X axis

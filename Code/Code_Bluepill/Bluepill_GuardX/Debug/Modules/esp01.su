@@ -1,0 +1,2 @@
+../Modules/esp01.c:22:6:ESP01_Init	16	static
+../Modules/esp01.c:27:6:ESP01_Decode	24	static

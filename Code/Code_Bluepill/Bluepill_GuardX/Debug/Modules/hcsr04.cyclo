@@ -1,0 +1,3 @@
+../Modules/hcsr04.c:17:13:Delay_us	2
+../Modules/hcsr04.c:23:6:HCSR04_Init	1
+../Modules/hcsr04.c:29:7:HCSR04_Read	6

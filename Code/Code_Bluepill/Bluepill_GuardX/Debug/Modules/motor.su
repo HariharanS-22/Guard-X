@@ -1,0 +1,8 @@
+../Modules/motor.c:26:13:Forward	8	static
+../Modules/motor.c:37:13:Backward	8	static
+../Modules/motor.c:48:13:Right	8	static
+../Modules/motor.c:59:13:Left	8	static
+../Modules/motor.c:70:13:carStop	8	static
+../Modules/motor.c:83:6:Motor_Init	16	static
+../Modules/motor.c:93:6:Motor_UpdateJoystick	16	static
+../Modules/motor.c:110:6:Motor_SetSpeed	16	static
