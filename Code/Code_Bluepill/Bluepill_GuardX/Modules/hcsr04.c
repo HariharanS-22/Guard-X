@@ -13,8 +13,7 @@ static TIM_HandleTypeDef *HCSR04_TIM;
 #define ECHO_PORT GPIOB
 #define ECHO_PIN  GPIO_PIN_1
 
-/* Microsecond delay using timer */
-static void Delay_us(uint16_t us)
+static void delay_us(uint16_t us)
 {
     __HAL_TIM_SET_COUNTER(HCSR04_TIM,0);
     while(__HAL_TIM_GET_COUNTER(HCSR04_TIM) < us);
@@ -22,52 +21,30 @@ static void Delay_us(uint16_t us)
 
 void HCSR04_Init(TIM_HandleTypeDef *htim)
 {
-    HCSR04_TIM = htim;
+	HCSR04_TIM = htim;
     HAL_TIM_Base_Start(HCSR04_TIM);
 }
 
 float HCSR04_Read(void)
 {
-    uint32_t start=0, stop=0;
-    uint32_t timeout;
+    uint32_t start, stop;
 
-    /* Trigger pulse */
     HAL_GPIO_WritePin(TRIG_PORT,TRIG_PIN,GPIO_PIN_RESET);
-    Delay_us(2);
+    delay_us(2);
 
     HAL_GPIO_WritePin(TRIG_PORT,TRIG_PIN,GPIO_PIN_SET);
-    Delay_us(10);
+    delay_us(10);
     HAL_GPIO_WritePin(TRIG_PORT,TRIG_PIN,GPIO_PIN_RESET);
 
-    __HAL_TIM_SET_COUNTER(HCSR04_TIM,0);
-    timeout = __HAL_TIM_GET_COUNTER(HCSR04_TIM);
-
-    /* Wait rising edge */
-    while(HAL_GPIO_ReadPin(ECHO_PORT,ECHO_PIN)==GPIO_PIN_RESET)
-    {
-        if((__HAL_TIM_GET_COUNTER(HCSR04_TIM)-timeout) > 60000)
-            return -1.0f;
-    }
-
+    while(HAL_GPIO_ReadPin(ECHO_PORT,ECHO_PIN)==GPIO_PIN_RESET);
     start = __HAL_TIM_GET_COUNTER(HCSR04_TIM);
 
-    /* Wait falling edge */
-    while(HAL_GPIO_ReadPin(ECHO_PORT,ECHO_PIN)==GPIO_PIN_SET)
-    {
-        if((__HAL_TIM_GET_COUNTER(HCSR04_TIM)-start) > 60000)
-            return -1.0f;
-    }
-
+    while(HAL_GPIO_ReadPin(ECHO_PORT,ECHO_PIN)==GPIO_PIN_SET);
     stop = __HAL_TIM_GET_COUNTER(HCSR04_TIM);
 
-    uint32_t diff;
+    uint32_t diff = stop - start;
 
-    if(stop >= start)
-        diff = stop - start;
-    else
-        diff = (0xFFFF - start + 1) + stop;
-
-    float distance = (diff * 0.0343f) * 0.5f;
+    float distance = (diff * 0.0343f)/2.0f;
 
     return distance;
 }

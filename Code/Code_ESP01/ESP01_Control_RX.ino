@@ -44,7 +44,9 @@ void loop(){
   while(Serial.available())
   {
     char c = Serial.read();
-
+    // Ignore carriage return
+    if(c == '\r') 
+      continue;
     // End of line received
     if(c == '\n')
     {
@@ -56,12 +58,20 @@ void loop(){
         Blynk.virtualWrite(V3, dist);
       }
 
+      if(strncmp(buffer,"V:",2)==0)
+      {
+        float vel = atof(buffer+2);
+        Blynk.virtualWrite(V4, vel);
+      }
+
       indexBuf = 0;   // reset buffer
     }
     else
     {
       if(indexBuf < sizeof(buffer)-1)
         buffer[indexBuf++] = c;
+      else
+        indexBuf = 0;    // overflow protection
     }
   }
   

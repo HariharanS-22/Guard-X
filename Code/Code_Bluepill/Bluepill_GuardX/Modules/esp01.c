@@ -40,6 +40,7 @@ void ESP01_Decode(uint8_t c)
 		{
 		   int spd;
 		   sscanf(cmdBuf,"S:%d",&spd);
+
 		   Motor_SetSpeed(spd);
 		}
 

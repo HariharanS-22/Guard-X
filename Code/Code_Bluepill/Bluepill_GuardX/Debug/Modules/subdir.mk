@@ -7,17 +7,20 @@
 C_SRCS += \
 ../Modules/esp01.c \
 ../Modules/hcsr04.c \
-../Modules/motor.c 
+../Modules/motor.c \
+../Modules/mpu6050.c 
 
 OBJS += \
 ./Modules/esp01.o \
 ./Modules/hcsr04.o \
-./Modules/motor.o 
+./Modules/motor.o \
+./Modules/mpu6050.o 
 
 C_DEPS += \
 ./Modules/esp01.d \
 ./Modules/hcsr04.d \
-./Modules/motor.d 
+./Modules/motor.d \
+./Modules/mpu6050.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -27,7 +30,7 @@ Modules/%.o Modules/%.su Modules/%.cyclo: ../Modules/%.c Modules/subdir.mk
 clean: clean-Modules
 
 clean-Modules:
-	-$(RM) ./Modules/esp01.cyclo ./Modules/esp01.d ./Modules/esp01.o ./Modules/esp01.su ./Modules/hcsr04.cyclo ./Modules/hcsr04.d ./Modules/hcsr04.o ./Modules/hcsr04.su ./Modules/motor.cyclo ./Modules/motor.d ./Modules/motor.o ./Modules/motor.su
+	-$(RM) ./Modules/esp01.cyclo ./Modules/esp01.d ./Modules/esp01.o ./Modules/esp01.su ./Modules/hcsr04.cyclo ./Modules/hcsr04.d ./Modules/hcsr04.o ./Modules/hcsr04.su ./Modules/motor.cyclo ./Modules/motor.d ./Modules/motor.o ./Modules/motor.su ./Modules/mpu6050.cyclo ./Modules/mpu6050.d ./Modules/mpu6050.o ./Modules/mpu6050.su
 
 .PHONY: clean-Modules
 

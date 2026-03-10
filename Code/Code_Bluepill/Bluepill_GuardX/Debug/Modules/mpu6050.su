@@ -1,0 +1,4 @@
+../Modules/mpu6050.c:21:6:MPU6050_Init	40	static
+../Modules/mpu6050.c:37:6:MPU6050_Read	40	static
+../Modules/mpu6050.c:52:6:MPU6050_Calibrate	16	static
+../Modules/mpu6050.c:70:7:compute_Velocity	24	static

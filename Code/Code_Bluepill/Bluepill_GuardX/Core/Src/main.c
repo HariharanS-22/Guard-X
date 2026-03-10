@@ -23,10 +23,12 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 #include "esp01.h"
 #include "motor.h"
 #include "hcsr04.h"
+#include "mpu6050.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,6 +47,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+I2C_HandleTypeDef hi2c1;
+
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 
@@ -52,10 +56,10 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 uint8_t rxChar;
-float distance=0;
-
-uint32_t now, lastTX = 0;
-uint32_t TX_Delay = 200; // 200us
+float dist = 0;
+float vel = 0;
+uint32_t now, lastTX = 0, lastSonar = 0;
+uint32_t TX_Delay = 200; // 200ms
 
 /* USER CODE END PV */
 
@@ -65,6 +69,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM2_Init(void);
+static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -120,9 +125,12 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM3_Init();
   MX_TIM2_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   Motor_Init(&htim3);
   HCSR04_Init(&htim2);
+  MPU6050_Init(&hi2c1);
+  MPU6050_Calibrate();
 
   HAL_UART_Receive_IT(&huart2,&rxChar,1);
   /* USER CODE END 2 */
@@ -132,18 +140,22 @@ int main(void)
 
   while (1)
   {
-	distance = HCSR04_Read();
+      now = HAL_GetTick();
 
-	now = HAL_GetTick();
-	if ((now - lastTX) > TX_Delay){
-		printf("D:%.2f\r\n",distance);
+      vel = compute_Velocity();
 
-		lastTX = now;
-	}
+      if((now - lastSonar) > 50)
+      {
+          dist = HCSR04_Read();
+          lastSonar = now;
+      }
 
-    /* USER CODE END WHILE */
+      if((now - lastTX) > TX_Delay)
+      {
+          printf("D:%.2f\r\nV:%.2f\r\n", dist, vel);
 
-    /* USER CODE BEGIN 3 */
+          lastTX = now;
+      }
   }
   /* USER CODE END 3 */
 }
@@ -185,6 +197,40 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.ClockSpeed = 400000;
+  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
 }
 
 /**
