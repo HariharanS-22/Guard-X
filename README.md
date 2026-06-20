@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/Made%20with-STM32-blue?style=flat"/>
 </p>
 
-# 🚗 Guard-X – Vehicle-to-Vehicle Early Collision Detection System
+# 🚗 Guard-X – V2V Early Collision Detection System
 
 <p align="center">
   <img src="Docs/Image_GuardX.jpeg" alt="Guard-X System Architecture" width="600"/>
@@ -29,7 +29,7 @@ Meet the team behind **Guard-X**:
 
 - 🚀 [**Hariharan**](https://github.com/HariharanS-22) 
 - 🛠️ [**Pragadeesh**](https://github.com/pragadeesh-raja)
-- 🧠 [**Sudhiksha**](https://github.com/sudhiksha)
+- 🧠 [**Sudhiksha**](https://github.com/Sudhiksha14)
 
 ## ⚙️ System Architecture
 
@@ -90,7 +90,6 @@ Meet the team behind **Guard-X**:
 
 </div>
 
----
 
 ## 🧠 Features
 
@@ -110,13 +109,7 @@ Meet the team behind **Guard-X**:
   
   Share vehicle status periodically with surrounding Guard-X nodes.
 
-- **Real-Time Driver Alerts**
-  
-  LED and buzzer activation when collision risk is detected.
 
-- **Modular Embedded Firmware**
-  
-  Separate drivers for communication, sensing, motor control, and alert management.
 
 ## ⚖️ License
 
